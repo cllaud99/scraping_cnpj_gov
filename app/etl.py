@@ -1,6 +1,7 @@
 import requests
 import os
 import wget
+import zipfile
 from tqdm import tqdm
 
 def check_estabelecimentos(url_base: list):
@@ -37,9 +38,18 @@ def check_estabelecimentos(url_base: list):
             n_estabelecimento += 1
     return n_estabelecimento_list
 
+def unzip():
+    dados_zipados = 'dados/zipados'
+    dados_raw = 'dados/raw'
+    if not os.path.exists(dados_raw):
+        os.makedirs(dados_raw)
+    for zip_file in os.listdir(dados_zipados):
+        if zip_file.endswith('.zip'):
+            full_path = os.path.join(dados_zipados, zip_file)
+            with zipfile.ZipFile(full_path, 'r' ) as zip_ref:
+                zip_ref.extractall(dados_raw)
+            print(f"Arquivo {zip_file} extraído com sucesso.")
+    print("Extração completa.")
 
 
-# Chamada da função com a URL como argumento e atribuição do resultado a uma variável
-#url_base = 'https://dadosabertos.rfb.gov.br/CNPJ/Estabelecimentos'
-#estabelecimento_list = check_estabelecimentos(url_base)
-#print("Lista de n_estabelecimento:", estabelecimento_list)
+
