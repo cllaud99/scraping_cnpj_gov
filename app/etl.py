@@ -11,11 +11,9 @@ def check_estabelecimentos(url_base: list):
         folder_name = "dados/zipados"
         os.makedirs(folder_name, exist_ok=True)
         while True:
-            # URL com o valor atual de n_estabelecimento
             url = f'{url_inicial}{i}{n_estabelecimento}.zip' 
             # Envia uma requisição HEAD para a URL
             response = requests.head(url)
-            # Verifica o código de status da resposta
             if response.status_code == 200:
                 print(f"Página {url} existe!")
                 n_estabelecimento_list.append(n_estabelecimento)
@@ -31,13 +29,13 @@ def check_estabelecimentos(url_base: list):
                                 f.write(chunk)
                                 barra_de_progresso.update(len(chunk))
             elif response.status_code == 404:
-                print(f"Página {i} não foi encontrada!")
-                break  # Sai do loop se a página não for encontrada
+                print(f"Página {url} não foi encontrada!")
+                break 
             else:
                 print("Erro na requisição:", response.status_code)
-                break  # Sai do loop se houver um erro na requisição
+                break 
             n_estabelecimento += 1
-        return n_estabelecimento_list
+    return n_estabelecimento_list
 
 
 
