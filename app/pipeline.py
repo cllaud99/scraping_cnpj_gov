@@ -1,5 +1,9 @@
-from etl import check_estabelecimentos
+from etl import check_estabelecimentos, unzip
 
-url_base = ['Estabelecimentos','Empresas']
 
-estabelecimento_list = check_estabelecimentos(url_base)
+#Incluir os dados como lista que serão baixados, são aceitos como argumento ('Estabelecimentos', 'Empresas')
+url_base = ['Empresas','Estabelecimentos']
+
+#check_estabelecimentos(url_base)
+
+unzip()
