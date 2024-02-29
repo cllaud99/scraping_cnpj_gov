@@ -54,28 +54,39 @@ def unzip():
     print("Extração completa.")
 
 if __name__ == "__main__":
-
     path = 'dados/raw/'
     parquet_empresas = 'dados/parquet/empresas.parquet'
     arquivos_empresas = []
-
+    if not os.path.exists('dados/parquet'):
+        os.makedirs('dados/parquet')
     for arquivo in os.listdir(path):
         if(arquivo.endswith('.EMPRECSV')):
             full_path_empresas = os.path.join(path,arquivo)
             arquivos_empresas.append(full_path_empresas)
     print(arquivos_empresas)
+    query = f"""
+            SELECT
+                cnpj_basico,
+                razao_social,
+                natureza_juridica,
+                capital_social,
+                porte_empresa
+            FROM
+                read_csv({arquivos_empresas}, AUTO_DETECT=FALSE, sep=";", columns={{
+                cnpj_basico: VARCHAR, razao_social: VARCHAR, natureza_juridica: INT, qualificacao_responsavel: VARCHAR,
+                capital_social: VARCHAR, porte_empresa: INT, ente_federativo: VARCHAR}})
+        """
+    
+    query_to_parquet = f"""
+    COPY ({query})
+    TO '{parquet_empresas}'
+    (FORMAT PARQUET);
+    """
 
-    duckdb.sql(
-        f"""
-        SELECT
-            cnpj_basico,
-            razao_social,
-            natureza_juridica,
-            capital_social,
-            porte_empresa
-        FROM
-            read_csv({arquivos_empresas}, AUTO_DETECT=FALSE, sep=";", columns={{
-            cnpj_basico: VARCHAR, razao_social: VARCHAR, natureza_juridica: INT, qualificacao_responsavel: VARCHAR,
-            capital_social: VARCHAR, porte_empresa: INT, ente_federativo: VARCHAR}})
-        """).show()
+    print(query_to_parquet)
+    
+    duckdb.sql(query).show()
+    duckdb.sql(query_to_parquet)
+
+
 
