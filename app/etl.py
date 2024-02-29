@@ -54,16 +54,20 @@ def unzip():
     print("Extração completa.")
 
 if __name__ == "__main__":
+
     path = 'dados/raw/'
     parquet_empresas = 'dados/parquet/empresas.parquet'
     arquivos_empresas = []
+
     if not os.path.exists('dados/parquet'):
         os.makedirs('dados/parquet')
+
     for arquivo in os.listdir(path):
         if(arquivo.endswith('.EMPRECSV')):
             full_path_empresas = os.path.join(path,arquivo)
             arquivos_empresas.append(full_path_empresas)
     print(arquivos_empresas)
+    
     query = f"""
             SELECT
                 cnpj_basico,
