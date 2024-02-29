@@ -4,6 +4,7 @@ import os
 import wget
 import zipfile
 from tqdm import tqdm
+import duckdb
 
 def check_estabelecimentos(url_base: list):
     for i in url_base:
@@ -52,10 +53,29 @@ def unzip():
             print(f"Arquivo {zip_file} extraído com sucesso.")
     print("Extração completa.")
 
-path = 'dados/raw/K3241.K03200Y4.D40210.EMPRECSV'
-df = pd.read_csv(path, encoding='utf-8')
+if __name__ == "__main__":
 
+    path = 'dados/raw/'
+    parquet_empresas = 'dados/parquet/empresas.parquet'
+    arquivos_empresas = []
 
+    for arquivo in os.listdir(path):
+        if(arquivo.endswith('.EMPRECSV')):
+            full_path_empresas = os.path.join(path,arquivo)
+            arquivos_empresas.append(full_path_empresas)
+    print(arquivos_empresas)
 
+    duckdb.sql(
+        f"""
+        SELECT
+            cnpj_basico,
+            razao_social,
+            natureza_juridica,
+            capital_social,
+            porte_empresa
+        FROM
+            read_csv({arquivos_empresas}, AUTO_DETECT=FALSE, sep=";", columns={{
+            cnpj_basico: VARCHAR, razao_social: VARCHAR, natureza_juridica: INT, qualificacao_responsavel: VARCHAR,
+            capital_social: VARCHAR, porte_empresa: INT, ente_federativo: VARCHAR}})
+        """).show()
 
-print(df.head())

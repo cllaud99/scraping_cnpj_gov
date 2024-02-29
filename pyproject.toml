@@ -1,20 +1,18 @@
 [tool.poetry]
 name = "screaping-cnpj-gov"
 version = "0.1.0"
-description = "Projeto com o intuito de fazer webscreaping de dados publicos de cnpj"
+description = ""
 authors = ["Claudio Pontes <claudiohpontes@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.12.1"
-pandas = "^2.2.1"
+python = "^3.12"
 requests = "^2.31.0"
+pandas = "^2.2.1"
 wget = "^3.2"
 tqdm = "^4.66.2"
+duckdb = "^0.10.0"
 
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.3"
 
 [build-system]
 requires = ["poetry-core"]

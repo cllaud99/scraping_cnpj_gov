@@ -10,8 +10,7 @@ A arquitetura do projeto pode ser acessada no link:
 Para instalar as dependências, recomenda-se o uso do Poetry. Certifique-se de ter o Poetry instalado em seu ambiente. Você pode instalar o Poetry seguindo as instruções em: [https://python-poetry.org/docs/#installation](https://python-poetry.org/docs/#installation)
 
 1. Clone o repositório
-2. Definir a versão do Python usando o pyenv local 3.12.1
-3. poetry env use 3.12.1
+2. Utilize a versão do Python 3.12.1
 
 
 
