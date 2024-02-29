@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 import os
 import wget
 import zipfile
@@ -51,5 +52,10 @@ def unzip():
             print(f"Arquivo {zip_file} extraído com sucesso.")
     print("Extração completa.")
 
+path = 'dados/raw/K3241.K03200Y4.D40210.EMPRECSV'
+df = pd.read_csv(path, encoding='utf-8')
 
 
+
+
+print(df.head())
