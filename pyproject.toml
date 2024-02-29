@@ -6,7 +6,7 @@ authors = ["Claudio Pontes <claudiohpontes@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "3.12.1"
 pandas = "^2.2.1"
 requests = "^2.31.0"
 wget = "^3.2"
