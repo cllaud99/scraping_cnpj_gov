@@ -1,1 +1,4 @@
-from app.extract_and_unzip import check_estabelecimentos, downloads_gerais, unzip
+def test_test():
+    saida = 'ola turma'
+    gabarito = 'ola turma'
+    assert saida == gabarito
