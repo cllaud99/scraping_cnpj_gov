@@ -12,8 +12,29 @@ pandas = "^2.2.1"
 wget = "^3.2"
 tqdm = "^4.66.2"
 duckdb = "^0.10.0"
+pandera = "^0.18.0"
+mkdocs = "^1.5.3"
+mkdocs-mermaid2-plugin = "^1.1.1"
+mkdocs-material = "^9.5.12"
+taskipy = "^1.12.2"
+isort = "^5.13.2"
+black = "^24.2.0"
+pytest = "^8.0.2"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.taskipy.tasks]
+format = """
+isort .
+black .
+"""
+kill = "kill -9 $(lsof -t -i :8000)"
+test = "pytest -v"
+run = """
+python3 app/main.py
+"""
+doc = "mkdocs serve"

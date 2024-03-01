@@ -1,10 +1,12 @@
-import requests
-import pandas as pd
 import os
-import wget
 import zipfile
-from tqdm import tqdm
+
 import duckdb
+import pandas as pd
+import requests
+import wget
+from tqdm import tqdm
+
 
 def check_estabelecimentos(url_base: list):
     for i in url_base:
