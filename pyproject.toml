@@ -21,6 +21,8 @@ isort = "^5.13.2"
 black = "^24.2.0"
 pytest = "^8.0.2"
 lxml = "^5.1.0"
+polars = "^0.20.13"
+pyarrow = "^15.0.0"
 
 
 [build-system]

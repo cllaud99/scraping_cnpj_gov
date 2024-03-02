@@ -1,6 +1,7 @@
 import os
 import zipfile
 from tqdm import tqdm
+import codecs
 
 def unzip():
     dados_zipados = 'dados/zipados'
@@ -17,8 +18,22 @@ def unzip():
     
     print("Extração completa.")
 
+def encoding():
+    BLOCKSIZE = 1048576
+    dados_raw = 'dados/raw/'
+    dados_utf8 = 'dados/utf8/'
+    os.makedirs(dados_utf8, exist_ok=True)
+    for csvs in os.listdir(dados_raw):
+        full_path = os.path.join(dados_raw, csvs)
+        full_path_out = os.path.join(dados_utf8, csvs)
+        with codecs.open(full_path, 'r', encoding='latin-1', errors='ignore') as sourceFile:
+            content = sourceFile.read()
+        with codecs.open(full_path_out, 'w', 'utf-8') as targetFile:
+            print('Convertido:', full_path_out)
+            targetFile.write(content)
+
 
 if __name__ == "__main__":
-    unzip()
+    encoding()
 
 
