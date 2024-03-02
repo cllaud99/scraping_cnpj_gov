@@ -131,6 +131,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+gov_cnpj.db
+gov_cnpj.db.wal
 
 # Spyder project settings
 .spyderproject

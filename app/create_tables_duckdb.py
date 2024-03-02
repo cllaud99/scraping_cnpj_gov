@@ -2,6 +2,7 @@ import duckdb
 
 DATABASE_NAME = 'gov_cnpj.db'
 
+
 con = duckdb.connect(DATABASE_NAME)
 con.sql("""
         
