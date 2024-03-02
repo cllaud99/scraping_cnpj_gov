@@ -12,7 +12,7 @@ pandas = "^2.2.1"
 wget = "^3.2"
 tqdm = "^4.66.2"
 duckdb = "^0.10.0"
-pandera = "^0.18.0"
+pandera = {extras = ["io"], version = "^0.18.0"}
 mkdocs = "^1.5.3"
 mkdocs-mermaid2-plugin = "^1.1.1"
 mkdocs-material = "^9.5.12"

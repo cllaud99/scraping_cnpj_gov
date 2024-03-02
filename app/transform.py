@@ -1,5 +1,5 @@
 import os
-
+import pandera as pa
 import duckdb
 
 path = 'dados/raw/'
@@ -17,7 +17,6 @@ def separa_arquivos(final_arquivo: str) -> list:
         if(arquivo.endswith(final_arquivo)):
             full_path_empresas = os.path.join(path,arquivo)
             lista_arquivos.append(full_path_empresas)
-    print(arquivos_empresas)
     return lista_arquivos
 
 
@@ -28,7 +27,8 @@ arquivos_estabelecimentos = separa_arquivos(final_arq_estabelecimentos)
 
 
 tabela_estabelecimentos = f"""
-    {arquivos_estabelecimentos}, AUTO_DETECT=FALSE, sep=";",columns={{
+    {arquivos_estabelecimentos}, AUTO_DETECT=FALSE, sep=";",
+    columns={{
     CNPJ_BASICO: VARCHAR,
     CNPJ_ORDEM: VARCHAR,
     CNPJ_DV: VARCHAR,
@@ -106,6 +106,11 @@ TO '{parquet_empresas}'
 
 #print(query_to_parquet)
 
-#duckdb.sql(query).show()
+
+
+
 duckdb.sql(query_test).show()
-#duckdb.sql(query_to_parquet)
+
+
+
+
