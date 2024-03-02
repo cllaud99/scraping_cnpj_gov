@@ -1,4 +1,4 @@
-from extract_and_unzip import check_estabelecimentos, downloads_gerais, unzip
+from app.unzip import check_estabelecimentos, downloads_gerais, unzip
 
 #Incluir os dados como lista que serão baixados, são aceitos como argumento ('Estabelecimentos', 'Empresas', 'Socios')
 url_base = ['Socios', 'Empresas', 'Estabelecimentos']
