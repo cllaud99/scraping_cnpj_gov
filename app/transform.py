@@ -1,43 +1,67 @@
 import os
 import pandera as pa
 import duckdb
-
+import polars as pl
 
 
 DATABASE_NAME = 'gov_cnpj.db'
 con = duckdb.connect(DATABASE_NAME)
 
 path = 'dados/utf8/'
+dados_raw = 'dados/raw/'
 parquet_empresas = 'dados/parquet/empresas.parquet'
 
-cnaes = ['cnaes', f"'{path}*.CNAECSV', AUTO_DETECT=TRUE, sep=';'"]
-empresas = ['empresas', f"'{path}*.EMPRECSV', AUTO_DETECT=TRUE, sep=';'"]
-estabelecimentos = ['estabelecimentos' , f"'{path}*.ESTABELE', AUTO_DETECT=TRUE, sep=';'"]
-municipios = ['municipios' , f"'{path}*.MUNICCSV', AUTO_DETECT=TRUE, sep=';'"]
-natureza_juridica = ['natureza_juridica' , f"'{path}*.NATJUCSV', AUTO_DETECT=TRUE, sep=';'"]
-paises = ['paises' , f"'{path}*.PAISCSV', AUTO_DETECT=TRUE, sep=';'"]
-qualificacao_socio = ['qualificacao_socio' , f"'{path}*.QUALSCSV', AUTO_DETECT=TRUE, sep=';'"]
-simples = ['simples' , f"'{path}*.SIMPLES.CSV.D40210', AUTO_DETECT=TRUE, sep=';'"]
-socios = ['socios' , f"'{path}*.SOCIOCSV', AUTO_DETECT=TRUE, sep=';'"]
+tabela = 'inicializada'
+
+con.query("""
+SELECT
+	*
+FROM 
+	main.empresas emp
+left join main.estabelecimentos est
+on emp.CNPJ_BASICO = est.CNPJ_BASICO 
+""").show()
 
 
 
-lista_tabelas = [cnaes, empresas, estabelecimentos, municipios, natureza_juridica, paises, qualificacao_socio, simples, socios]
-
-
-for item in lista_tabelas:
+for csvs in os.listdir(dados_raw):
+    if csvs.endswith('.CNAECSV'):
+        tabela = 'cnaes'
+    elif csvs.endswith('.EMPRECSV'):
+        tabela = 'empresas'
+    elif csvs.endswith('.MUNICCSV'):
+        tabela = 'municipios'
+    elif csvs.endswith('.ESTABELE'):
+        tabela = 'estabelecimentos'
+    elif csvs.endswith('.NATJUCSV'):
+        tabela = 'paises'
+    elif csvs.endswith('.QUALSCSV'):
+        tabela = 'qualificacao_socio'
+    elif csvs.endswith('.SIMPLES.CSV.D40210'):
+        tabela = 'simples'
+    elif csvs.endswith('.SOCIOCSV'):
+        tabela = 'socios'
+    print(tabela)
+    print(csvs)
+    df = pl.read_csv(f'{dados_raw}{csvs}', separator=';', encoding='latin-1', ignore_errors=True)
+    print("Leu o DF")
     try:
         query = f"""
-            INSERT INTO {item[0]}
+            INSERT INTO {tabela}
             SELECT
                     *
             FROM
-            read_csv({item[1]})
+            df
             """
-        print(f"Tabela {item} populada")
         con.sql(query)
+        print(f"Tabela {tabela} populada")
     except Exception as e:
-        print(f"Erro no item {item}: {e}")
+        print(f"Erro no item {tabela}: {e}")
+
+
+
+
+
 
 #query_to_parquet = f"""
 #COPY ({query})
