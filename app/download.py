@@ -2,20 +2,20 @@ import pandas as pd
 import requests
 import os
 from tqdm import tqdm
-
+import time
 
 def baixa_dados_cnpj(url: str, final_arquivo: str):
 
+    start_time = time.time()
     dfs = pd.read_html(url)
-
     df_urls = dfs[0]
     full_path_list = []
-    pasta_destino = "dados/zipados"
+    pasta_destino = "dados/zipados/"
+
+    os.makedirs(pasta_destino, exist_ok=True)
 
     for name in df_urls["Name"]:
-
         if isinstance(name, str) and name.endswith(final_arquivo):
-
             full_path = f"{url}{name}"
             response = requests.head(full_path)
 
@@ -23,21 +23,19 @@ def baixa_dados_cnpj(url: str, final_arquivo: str):
                 print(f"O endereço: {full_path} foi encontrado")
                 total_size = int(response.headers.get('Content-Length', 0))
                 full_path_list.append(( name, full_path, total_size))  # Adicione o caminho à lista
+    end_time = time.time()
 
+    duracao = end_time - start_time
 
-
+    print("Tempo decorido",duracao, "segundos")
+    
     total_size_sum = sum(total_size for _, _, total_size in full_path_list)
-
     quantidade_downloads = len(full_path_list)
-
     size_gb = round(float(total_size_sum) / (1024 ** 3), 2)
-
     print(f"Será feito o download de: {len(full_path_list)} arquivos "
         f"totalizando um tamanho de: {size_gb} GB "
         "essa operação irá demorar um pouco...")
-    
     resposta = input("Deseja realizar o Download agora? (s/n)")
-
     while resposta.lower() != 's' and resposta.lower() != 'n':
         print("Você digitou um valor incorreto")
         resposta = input("Deseja realizar o Download agora? (s/n)")
@@ -69,15 +67,13 @@ def baixa_dados_cnpj(url: str, final_arquivo: str):
             progresso_download = round(float(total_baixado / total_size_sum * 100),2)
 
             print(f"Baixados: {total_baixado_gb} de {size_gb} progresso total: {progresso_download}%")
-
         print(full_path_list)
 
     else: print("Processo abortado")
 
 
 
-url_test = 'https://dadosabertos.rfb.gov.br/CNPJ/'
-final_arquivo_test = '.zip'
-
 if __name__ == "__main__":
+    url_test = 'https://dadosabertos.rfb.gov.br/CNPJ/'
+    final_arquivo_test = '.zip'
     baixa_dados_cnpj(url_test, final_arquivo_test)
