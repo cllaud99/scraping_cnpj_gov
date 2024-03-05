@@ -13,8 +13,8 @@ schema_empresa = pa.DataFrameSchema({
 
 
 schema_estabelecimento = pa.DataFrameSchema({
-    "CNPJ BÁSICO": pa.Column(pa.String, nullable=False),
-    "CNPJ ORDEM": pa.Column(pa.String, nullable=False),
+    "CNPJ BÁSICO": pa.Column(pa.String),
+    "CNPJ ORDEM": pa.Column(pa.String),
     "CNPJ DV": pa.Column(pa.String, nullable=False),
     "IDENTIFICADOR MATRIZ/FILIAL": pa.Column(pa.Int, pa.Check.isin([1, 2]), nullable=False),
     "NOME FANTASIA": pa.Column(pa.String),
