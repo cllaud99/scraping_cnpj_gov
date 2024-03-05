@@ -4,14 +4,14 @@ import schemas
 
 diretorio = 'dados/raw'
 
-def ler_arquivos_polars(final_arquivo, diretorio) -> pl.DataFrame:
+def ler_arquivos_polars(final_arquivo, diretorio, headers) -> pl.DataFrame:
     """
     Lê os arquivos com o final especificado no diretório fornecido e retorna um DataFrame Polars.
     
     Args:
         final_arquivo (str): O final do nome do arquivo que se deseja ler.
         diretorio (str): O diretório onde os arquivos estão localizados.
-
+        header (str): os cabeçalhos que o df deve ter
     Returns:
         DataFrame Polars: Um DataFrame contendo todos os arquivos com o final especificado.
     """
@@ -23,7 +23,9 @@ def ler_arquivos_polars(final_arquivo, diretorio) -> pl.DataFrame:
 
             caminho_arquivo = os.path.join(diretorio, arquivo)
 
-            df = pl.read_csv(caminho_arquivo, encoding='latin1', has_header=False, separator=';')
+            #df = pl.read_csv(caminho_arquivo, encoding='latin1', has_header=False, separator=';')
+
+            df = pl.read_csv(caminho_arquivo, encoding='latin1', separator=';', new_columns=headers)
 
             dataframes.append(df)
  
@@ -37,7 +39,7 @@ schema_empresa = schemas.schema_empresa
 final_empresas = '.EMPRECSV'
 headers = list(schema_empresa.columns.keys())
 print(headers)
-df_empresas = ler_arquivos_polars(final_empresas, diretorio)
+df_empresas = ler_arquivos_polars(final_empresas, diretorio, headers)
 
 
 
