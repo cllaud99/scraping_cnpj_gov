@@ -4,18 +4,30 @@ import os
 from tqdm import tqdm
 import time
 
-def baixa_dados_cnpj(url: str, final_arquivo: str):
+def baixa_dados_cnpj(url: str, extensao: str, destino: str):
+
+    """
+    Função que realiza uma serie de downloads de uma URL que termine com uma extensão de arquivo específica.
+    
+    Args:
+        url (str): URL de onde o arquivo será baixado.
+        extensao (str): Extensão dos arquivos que serão baixados.
+        destino (str): Pasta onde serão salvos os arquivos.
+    
+    Return:
+        str: Mensagem de sucesso ou erro.
+    """
 
     start_time = time.time()
     dfs = pd.read_html(url)
     df_urls = dfs[0]
     full_path_list = []
-    pasta_destino = "dados/zipados/"
 
-    os.makedirs(pasta_destino, exist_ok=True)
+
+    os.makedirs(destino, exist_ok=True)
 
     for name in df_urls["Name"]:
-        if isinstance(name, str) and name.endswith(final_arquivo):
+        if isinstance(name, str) and name.endswith(extensao):
             full_path = f"{url}{name}"
             response = requests.head(full_path)
 
@@ -49,7 +61,7 @@ def baixa_dados_cnpj(url: str, final_arquivo: str):
         for file_name, file_url, file_size in full_path_list:
             
             print(f"Executando etapa {etapa} de {quantidade_downloads}")
-            file_path = os.path.join(pasta_destino, file_name)
+            file_path = os.path.join(destino, file_name)
             
             with requests.get(file_url, stream=True) as r:
 
@@ -72,8 +84,8 @@ def baixa_dados_cnpj(url: str, final_arquivo: str):
     else: print("Processo abortado")
 
 
-
 if __name__ == "__main__":
     url_test = 'https://dadosabertos.rfb.gov.br/CNPJ/'
-    final_arquivo_test = '.zip'
-    baixa_dados_cnpj(url_test, final_arquivo_test)
+    final_arquivo_test = 'Socios0.zip'
+    destino_test = "dados/zipados/"
+    baixa_dados_cnpj(url_test, final_arquivo_test, destino_test)
