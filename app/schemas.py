@@ -10,8 +10,6 @@ schema_empresa = pa.DataFrameSchema({
     "ENTE FEDERATIVO RESPONSÁVEL": pa.Column(pa.String)
 })
 
-
-
 schema_estabelecimento = pa.DataFrameSchema({
     "CNPJ BÁSICO": pa.Column(pa.String),
     "CNPJ ORDEM": pa.Column(pa.String),

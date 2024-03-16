@@ -5,6 +5,8 @@ import pandera as pa
 def validate_cnpj(cnpj):
     if len(cnpj) != 8:
         raise ValueError("O CNPJ BÁSICO deve ter 8 caracteres.")
+    
+    
 
 # Define a função de validação para o PORTE DA EMPRESA
 def validate_porte(porte):
