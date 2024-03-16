@@ -3,37 +3,47 @@ import zipfile
 from tqdm import tqdm
 import codecs
 
-def unzip():
-    dados_zipados = 'dados/zipados'
-    dados_raw = 'dados/raw'
-    if not os.path.exists(dados_raw):
-        os.makedirs(dados_raw)
+def unzip(pasta_origem: str, pasta_destino: str):
     
-    zip_files = [f for f in os.listdir(dados_zipados) if f.endswith('.zip')]
-    for zip_file in tqdm(zip_files, desc="Descompactando arquivos"):
-        full_path = os.path.join(dados_zipados, zip_file)
-        with zipfile.ZipFile(full_path, 'r') as zip_ref:
-            zip_ref.extractall(dados_raw)
-        print(f"Arquivo {zip_file} extraído com sucesso.")
-    
-    print("Extração completa.")
+    """
+    Função que faz a descompactação de arquivos .zip.
 
-def encoding():
-    BLOCKSIZE = 1048576
-    dados_raw = 'dados/raw/'
-    dados_utf8 = 'dados/utf8/'
-    os.makedirs(dados_utf8, exist_ok=True)
-    for csvs in os.listdir(dados_raw):
-        full_path = os.path.join(dados_raw, csvs)
-        full_path_out = os.path.join(dados_utf8, csvs)
-        with codecs.open(full_path, 'r', encoding='latin-1', errors='ignore') as sourceFile:
-            content = sourceFile.read()
-        with codecs.open(full_path_out, 'w', 'utf-8') as targetFile:
-            print('Convertido:', full_path_out)
-            targetFile.write(content)
+    Args:
+        pasta_origem (str): Pasta onde estão os arquivos de origem.
+        pasta_destino (str): Pasta onde serão salvos os arquivos descompactados.
+    Return:
+        str: Mensagem de sucesso ou erro.
+
+    """
+
+    if not os.path.exists(pasta_destino):
+        os.makedirs(pasta_destino)
+    
+    zip_files = [f for f in os.listdir(pasta_origem) if f.endswith('.zip')]
+
+    if not zip_files:
+        return "Nenhum arquivo .zip encontrado na pasta de origem."
+
+    for zip_file in tqdm(zip_files, desc="Descompactando arquivos"):
+        full_path = os.path.join(pasta_origem, zip_file)
+        try:
+            with zipfile.ZipFile(full_path, 'r') as zip_ref:
+                zip_ref.extractall(pasta_destino)
+            print(f"Arquivo {zip_file} extraído com sucesso.")
+        except zipfile.BadZipFile:
+            print(f"Erro ao extrair {zip_file}: arquivo corrompido ou inválido.")
+        except Exception as e:
+            print(f"Erro desconhecido ao extrair {zip_file}: {e}")
+    
+    return "Extração completa."
+
 
 
 if __name__ == "__main__":
-    encoding()
+
+    pasta_origem = 'dados/zipados'
+    pasta_destino = 'dados/raw'
+    unzip(pasta_origem, pasta_destino)
+ 
 
 

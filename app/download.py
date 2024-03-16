@@ -1,13 +1,20 @@
 import pandas as pd
 import requests
+import re
 import os
 from tqdm import tqdm
+from typing import List
 import time
 
-def baixa_dados_cnpj(url: str, extensao: str, destino: str):
+
+
+
+
+def baixa_dados_cnpj(url: str, extensao: str, destino: str, termos: List):
 
     """
-    Função que realiza uma serie de downloads de uma URL que termine com uma extensão de arquivo específica.
+    Função que carrega uma tabela, filtra termos especificos e 
+    realiza uma serie de downloads de uma URL que termine com uma extensão de arquivo específica e o nome do arquivo esteja presente nos termos.
     
     Args:
         url (str): URL de onde o arquivo será baixado.
@@ -16,38 +23,62 @@ def baixa_dados_cnpj(url: str, extensao: str, destino: str):
     
     Return:
         str: Mensagem de sucesso ou erro.
+        
     """
 
     start_time = time.time()
+
     dfs = pd.read_html(url)
     df_urls = dfs[0]
-    full_path_list = []
 
+    print(dfs)
+
+    for name in df_urls["Name"]:
+        print(name)
+
+
+    full_path_list = []
 
     os.makedirs(destino, exist_ok=True)
 
     for name in df_urls["Name"]:
-        if isinstance(name, str) and name.endswith(extensao):
-            full_path = f"{url}{name}"
-            response = requests.head(full_path)
 
-            if response.status_code == 200:
-                print(f"O endereço: {full_path} foi encontrado")
-                total_size = int(response.headers.get('Content-Length', 0))
-                full_path_list.append(( name, full_path, total_size))  # Adicione o caminho à lista
+        if isinstance(name, str) and name.endswith(extensao):
+
+            termo_desejado = any(item in name for item in termos)
+
+            print(termo_desejado)
+            print(name) 
+
+
+            if termo_desejado == True:
+                
+                full_path = f"{url}{name}"
+                response = requests.head(full_path)
+
+                if response.status_code == 200:
+                    print(f"O endereço: {full_path} foi encontrado")
+                    total_size = int(response.headers.get('Content-Length', 0))
+                    full_path_list.append(( name, full_path, total_size))  # Adicione o caminho à lista
+
     end_time = time.time()
 
     duracao = end_time - start_time
 
-    print("Tempo decorido",duracao, "segundos")
+    print("Tempo decorido: ",duracao, "segundos")
+
     
     total_size_sum = sum(total_size for _, _, total_size in full_path_list)
     quantidade_downloads = len(full_path_list)
+
     size_gb = round(float(total_size_sum) / (1024 ** 3), 2)
+
     print(f"Será feito o download de: {len(full_path_list)} arquivos "
         f"totalizando um tamanho de: {size_gb} GB "
         "essa operação irá demorar um pouco...")
+    
     resposta = input("Deseja realizar o Download agora? (s/n)")
+
     while resposta.lower() != 's' and resposta.lower() != 'n':
         print("Você digitou um valor incorreto")
         resposta = input("Deseja realizar o Download agora? (s/n)")
@@ -86,6 +117,7 @@ def baixa_dados_cnpj(url: str, extensao: str, destino: str):
 
 if __name__ == "__main__":
     url_test = 'https://dadosabertos.rfb.gov.br/CNPJ/'
-    final_arquivo_test = 'Socios0.zip'
+    final_arquivo_test = '.zip'
     destino_test = "dados/zipados/"
-    baixa_dados_cnpj(url_test, final_arquivo_test, destino_test)
+    teste = baixa_dados_cnpj(url_test, final_arquivo_test, destino_test, ['Empresas','cnaes'])
+    print(teste)

@@ -8,6 +8,7 @@ diretorio = 'dados/raw'
 print(diretorio)
 
 def ler_arquivos_polars(final_arquivo, diretorio, headers) -> pl.DataFrame:
+
     """
     Lê os arquivos com o final especificado no diretório fornecido e retorna um DataFrame Polars.
     
@@ -17,7 +18,9 @@ def ler_arquivos_polars(final_arquivo, diretorio, headers) -> pl.DataFrame:
         headers (str): os cabeçalhos que o DataFrame Polars deve ter
     Returns:
         DataFrame Polars: Um DataFrame contendo todos os arquivos com o final especificado.
+        
     """
+
     dataframes = []
 
     # Verifica cada arquivo na pasta
@@ -42,7 +45,6 @@ schema_empresa = schemas.schema_empresa
 final_empresas = '.EMPRECSV'
 headers_empresa = list(schema_empresa.columns.keys())
 
-#df_empresas= ler_arquivos_polars(final_empresas, diretorio, headers_empresa)
 query = (
    f"""
         SELECT
