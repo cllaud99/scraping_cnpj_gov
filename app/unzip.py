@@ -30,6 +30,7 @@ def unzip(pasta_origem: str, pasta_destino: str):
             with zipfile.ZipFile(full_path, 'r') as zip_ref:
                 zip_ref.extractall(pasta_destino)
             print(f"Arquivo {zip_file} extraído com sucesso.")
+            os.remove(full_path)
         except zipfile.BadZipFile:
             print(f"Erro ao extrair {zip_file}: arquivo corrompido ou inválido.")
         except Exception as e:

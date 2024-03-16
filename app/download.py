@@ -7,9 +7,6 @@ from typing import List
 import time
 
 
-
-
-
 def baixa_dados_cnpj(url: str, extensao: str, destino: str, termos: List):
 
     """
@@ -20,6 +17,7 @@ def baixa_dados_cnpj(url: str, extensao: str, destino: str, termos: List):
         url (str): URL de onde o arquivo será baixado.
         extensao (str): Extensão dos arquivos que serão baixados.
         destino (str): Pasta onde serão salvos os arquivos.
+        termos (List): lista dos arquivos que quer baixar exemplo ['Empresas', 'Socios', '...'] deixar vazia para baixar tudo
     
     Return:
         str: Mensagem de sucesso ou erro.
@@ -29,6 +27,8 @@ def baixa_dados_cnpj(url: str, extensao: str, destino: str, termos: List):
     start_time = time.time()
 
     dfs = pd.read_html(url)
+    print(dfs)
+
     df_urls = dfs[0]
 
     print(dfs)
@@ -45,14 +45,17 @@ def baixa_dados_cnpj(url: str, extensao: str, destino: str, termos: List):
 
         if isinstance(name, str) and name.endswith(extensao):
 
-            termo_desejado = any(item in name for item in termos)
+            if len(termos) == 0:
+                termo_desejado = True
+            else:
+                termo_desejado = any(item in name for item in termos)
 
             print(termo_desejado)
             print(name) 
 
 
             if termo_desejado == True:
-                
+
                 full_path = f"{url}{name}"
                 response = requests.head(full_path)
 

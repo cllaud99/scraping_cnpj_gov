@@ -4,7 +4,7 @@ import shutil
 import chardet
 
 
-def encoding(pasta_origem: str, pasta_destino: str):
+def encod(pasta_origem: str, pasta_destino: str):
 
     """
     Função que faz encoding de arquivos para utf-8
@@ -25,17 +25,22 @@ def encoding(pasta_origem: str, pasta_destino: str):
 
     # Processa cada arquivo na pasta de origem
     for csvs in os.listdir(pasta_origem):
+
         full_path = os.path.join(pasta_origem, csvs)
         full_path_out = os.path.join(pasta_destino, csvs)
+
         with codecs.open(full_path, 'r', encoding='latin-1', errors='ignore') as sourceFile:
             content = sourceFile.read()
+            
         with codecs.open(full_path_out, 'w', 'utf-8') as targetFile:
             print('Convertido:', full_path_out)
             targetFile.write(content)
+            
+        os.remove(full_path)
 
 if __name__ == "__main__":
 
     pasta_origem = 'dados/raw/'
     pasta_destino = 'dados/utf8/'
 
-    encoding(pasta_origem, pasta_destino)
+    encod(pasta_origem, pasta_destino)
