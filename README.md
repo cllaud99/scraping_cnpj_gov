@@ -1,4 +1,4 @@
-# Projeto de Scraping de Dados Abertos de CNPJ (ainda em desenvolvimento)
+# Projeto de Scraping de Dados Abertos de CNPJ (em desenvolvimento)
 
 ## Este projeto é uma ferramenta para coletar dados abertos de CNPJ da Receita Federal.
 
