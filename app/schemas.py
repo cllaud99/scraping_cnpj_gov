@@ -42,3 +42,47 @@ schema_estabelecimento = pa.DataFrameSchema({
     "SITUAÇÃO ESPECIAL": pa.Column(pa.String),
     "DATA DA SITUAÇÃO ESPECIAL": pa.Column(pa.DateTime)
 })
+
+schema_simples = pa.DataFrameSchema({
+    "CNPJ BÁSICO": pa.Column(pa.String),
+    "OPÇÃO PELO SIMPLES": pa.Column(pa.String, nullable=True),
+    "DATA DE OPÇÃO PELO SIMPLES": pa.Column(pa.DateTime, nullable=True),
+    "DATA DE EXCLUSÃO DO SIMPLES": pa.Column(pa.DateTime, nullable=True),
+    "OPÇÃO PELO MEI": pa.Column(pa.String, nullable=True),
+    "DATA DE OPÇÃO PELO MEI": pa.Column(pa.DateTime, nullable=True),
+    "DATA DE EXCLUSÃO DO MEI": pa.Column(pa.DateTime, nullable=True)
+})
+
+
+
+schema_socios = pa.DataFrameSchema({
+    "CNPJ BÁSICO": pa.Column(pa.String),
+    "IDENTIFICADOR DE SÓCIO": pa.Column(pa.String),
+    "NOME DO SÓCIO (NO CASO PF) OU RAZÃO SOCIAL (NO CASO PJ)": pa.Column(pa.String),
+    "CNPJ/CPF DO SÓCIO": pa.Column(pa.String),
+    "QUALIFICAÇÃO DO SÓCIO": pa.Column(pa.String),
+    "DATA DE ENTRADA SOCIEDADE": pa.Column(pa.DateTime),
+    "PAIS": pa.Column(pa.String),
+    "REPRESENTANTE LEGAL": pa.Column(pa.String),
+    "NOME DO REPRESENTANTE": pa.Column(pa.String),
+    "QUALIFICAÇÃO DO REPRESENTANTE LEGAL": pa.Column(pa.String),
+    "FAIXA ETÁRIA": pa.Column(pa.String)
+})
+
+# Schema para as qualificações de sócios
+schema_qualificacoes_socios = pa.DataFrameSchema({
+    "CÓDIGO": pa.Column(pa.String),
+    "DESCRIÇÃO": pa.Column(pa.String)
+})
+
+# Schema para as naturezas jurídicas
+schema_naturezas_juridicas = pa.DataFrameSchema({
+    "CÓDIGO": pa.Column(pa.String),
+    "DESCRIÇÃO": pa.Column(pa.String)
+})
+
+# Schema para os CNAEs
+schema_cnaes = pa.DataFrameSchema({
+    "CÓDIGO": pa.Column(pa.String),
+    "DESCRIÇÃO": pa.Column(pa.String)
+})

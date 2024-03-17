@@ -3,8 +3,9 @@ import pandera as pa
 import duckdb
 import schemas
 import pandas as pd
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 def carrega_df_duck (pasta_origem: str, final_arquivo: str, schema: pa.SchemaModel):
     
