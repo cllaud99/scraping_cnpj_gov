@@ -53,3 +53,4 @@ if __name__ == "__main__":
 
     df_empresas = carrega_df_duck("dados/utf8/","EMPRECSV", schemas.schema_empresa)
     df_estabelecimentos = carrega_df_duck("dados/utf8/","ESTABELE", schemas.schema_estabelecimento)
+    print(df_estabelecimentos)
