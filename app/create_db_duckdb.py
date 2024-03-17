@@ -5,5 +5,111 @@ def conectar_banco():
     return duckdb.connect(database='duckdb.db', read_only=False)
 
 
-if __name__== "__main__":
-    conectar_banco()
+def create_tables(con):
+    con.sql("""
+    CREATE TABLE IF NOT EXISTS empresas (
+        CNPJ_BASICO INTEGER,
+        RAZAO_SOCIAL_NOME_EMPRESARIAL VARCHAR,
+        NATUREZA_JURIDICA INTEGER,
+        QUALIFICACAO_DO_RESPONSAVEL INTEGER,
+        CAPITAL_SOCIAL_DA_EMPRESA DECIMAL,
+        PORTE_DA_EMPRESA INTEGER,
+        ENTE_FEDERATIVO_RESPONSAVEL VARCHAR
+    );
+
+    -- Tabela estabelecimentos
+    CREATE TABLE IF NOT EXISTS estabelecimentos (
+        CNPJ_BASICO VARCHAR,
+        CNPJ_ORDEM VARCHAR,
+        CNPJ_DV VARCHAR NOT NULL,
+        IDENTIFICADOR_MATRIZ_FILIAL INTEGER,
+        NOME_FANTASIA VARCHAR,
+        SITUACAO_CADASTRAL VARCHAR,
+        DATA_SITUACAO_CADASTRAL TIMESTAMP,
+        MOTIVO_SITUACAO_CADASTRAL VARCHAR,
+        NOME_DA_CIDADE_NO_EXTERIOR VARCHAR,
+        PAIS VARCHAR,
+        DATA_DE_INICIO_ATIVIDADE TIMESTAMP,
+        CNAE_FISCAL_PRINCIPAL VARCHAR,
+        CNAE_FISCAL_SECUNDARIA VARCHAR,
+        TIPO_DE_LOGRADOURO VARCHAR,
+        LOGRADOURO VARCHAR,
+        NUMERO VARCHAR,
+        COMPLEMENTO VARCHAR,
+        BAIRRO VARCHAR,
+        CEP VARCHAR,
+        UF VARCHAR,
+        MUNICIPIO VARCHAR,
+        DDD_1 VARCHAR,
+        TELEFONE_1 VARCHAR,
+        DDD_2 VARCHAR,
+        TELEFONE_2 VARCHAR,
+        DDD_DO_FAX VARCHAR,
+        FAX VARCHAR,
+        CORREIO_ELETRONICO VARCHAR,
+        SITUACAO_ESPECIAL VARCHAR,
+        DATA_DA_SITUACAO_ESPECIAL TIMESTAMP
+    );
+
+    -- Tabela simples
+    CREATE TABLE IF NOT EXISTS simples (
+        CNPJ_BASICO VARCHAR,
+        OPCAO_PELO_SIMPLES VARCHAR,
+        DATA_DE_OPCAO_PELO_SIMPLES TIMESTAMP,
+        DATA_DE_EXCLUSAO_DO_SIMPLES TIMESTAMP,
+        OPCAO_PELO_MEI VARCHAR,
+        DATA_DE_OPCAO_PELO_MEI TIMESTAMP,
+        DATA_DE_EXCLUSAO_DO_MEI TIMESTAMP
+    );
+
+    -- Tabela socios
+    CREATE TABLE IF NOT EXISTS socios (
+        CNPJ_BASICO VARCHAR,
+        IDENTIFICADOR_DE_SOCIO VARCHAR,
+        NOME_DO_SOCIO_NO_CASO_PF_OU_RAZAO_SOCIAL_NO_CASO_PJ VARCHAR,
+        CNPJ_CPF_DO_SOCIO VARCHAR,
+        QUALIFICACAO_DO_SOCIO VARCHAR,
+        DATA_DE_ENTRADA_SOCIEDADE TIMESTAMP,
+        PAIS VARCHAR,
+        REPRESENTANTE_LEGAL VARCHAR,
+        NOME_DO_REPRESENTANTE VARCHAR,
+        QUALIFICACAO_DO_REPRESENTANTE_LEGAL VARCHAR,
+        FAIXA_ETARIA VARCHAR
+    );
+
+    -- Tabela qualificacoes_socios
+    CREATE TABLE IF NOT EXISTS qualificacoes_socios (
+        CODIGO VARCHAR,
+        DESCRICAO VARCHAR
+    );
+
+    -- Tabela naturezas_juridicas
+    CREATE TABLE IF NOT EXISTS naturezas_juridicas (
+        CODIGO VARCHAR,
+        DESCRICAO VARCHAR
+    );
+
+    -- Tabela cnaes
+    CREATE TABLE IF NOT EXISTS cnaes (
+        CODIGO VARCHAR,
+        DESCRICAO VARCHAR
+    );
+
+    -- Tabela paises
+    CREATE TABLE IF NOT EXISTS paises (
+        CODIGO VARCHAR,
+        DESCRICAO VARCHAR
+    );
+
+    -- Tabela municipios
+    CREATE TABLE IF NOT EXISTS municipios (
+        CODIGO VARCHAR,
+        DESCRICAO VARCHAR
+    );
+    """)
+
+
+if __name__ == "__main__":
+    con = conectar_banco()
+    create_tables(con)
+    

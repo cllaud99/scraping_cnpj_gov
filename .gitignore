@@ -8,8 +8,11 @@ __pycache__/
 *$py.class
 
 # C extensions
+*.db.tmp
 *.so
 *.db
+*.wal
+*.tmp
 
 # Distribution / packaging
 .Python

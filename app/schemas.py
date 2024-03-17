@@ -86,3 +86,15 @@ schema_cnaes = pa.DataFrameSchema({
     "CÓDIGO": pa.Column(pa.String),
     "DESCRIÇÃO": pa.Column(pa.String)
 })
+
+# Schema para os países
+schema_paises = pa.DataFrameSchema({
+    "CÓDIGO": pa.Column(pa.String),
+    "DESCRIÇÃO": pa.Column(pa.String)
+})
+
+# Schema para os municípios
+schema_municipios = pa.DataFrameSchema({
+    "CÓDIGO": pa.Column(pa.String),
+    "DESCRIÇÃO": pa.Column(pa.String)
+})
