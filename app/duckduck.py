@@ -31,8 +31,6 @@ def carrega_df_duck (nome_tabela: str, pasta_origem: str, final_arquivo: str, sc
     tipos_das_colunas = {col: tipo_substituicao.get(tipo, tipo) for col, tipo in tipos_das_colunas.items()}
 
 
-    print(tipos_das_colunas)
-
     acrescenta_asterisco = f"*.{ final_arquivo }"
     path_empresas = os.path.join(pasta_origem, acrescenta_asterisco)
 
@@ -48,13 +46,13 @@ def carrega_df_duck (nome_tabela: str, pasta_origem: str, final_arquivo: str, sc
 
     #df_duckdb = duckdb.sql(query)
 
-    query_insert = f" COPY ( { query } ) TO '{nome_tabela}' (FORMAT PARQUET)"
+    #query_insert = f" COPY ( { query } ) TO '{nome_tabela}' (FORMAT PARQUET)"
 
-    df_duckdb = duckdb.sql(query_insert)
+    df_duckdb = duckdb.sql(query)
 
-    print(query_insert)
+    #print(df_duckdb)
 
-    #on.sql(query_insert)
+    #con.sql(query_insert)
 
 
     return df_duckdb
@@ -69,10 +67,25 @@ def cria_df_duck(pasta_origem: str):
     df_qualificacoes_socios = carrega_df_duck('dados/parquet/qualificacoes_socios.parquet',pasta_origem,"QUALSCSV", schemas.schema_qualificacoes_socios)
     df_natureza_juridica = carrega_df_duck('dados/parquet/naturezas_juridicas.parquet',pasta_origem,"NATJUCSV", schemas.schema_naturezas_juridicas)
     df_cnaes = carrega_df_duck('dados/parquet/cnaes.parquet',pasta_origem,"CNAECSV", schemas.schema_cnaes)
+    sql_novo = f"""
+        SELECT
+            *
+        FROM
+            { df_estabelecimentos } estabele
+        LEFT JOIN
+            {df_cnaes} cnaes ON
+            cnaes.CODIGO = estabele.CNAE_FISCAL_PRINCIPAL
+            """
+    duckdb.sql(sql_novo).show()
+
+
 
 
 
 if __name__ == "__main__":
     cria_df_duck('dados/utf8')
+    
+ 
+    
 
   
